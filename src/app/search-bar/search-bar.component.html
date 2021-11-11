@@ -1,0 +1,14 @@
+<div id="search-bar">
+  <form>
+    <label for="searchInput" hidden>Search</label>
+    <input
+      id="searchInput"
+      type="text"
+      name="searchInput"
+      #searchInput
+      (keyup)="onChange(searchInput.value)"
+      required
+    />
+  </form>
+  <i class="fa fa-search"></i>
+</div>

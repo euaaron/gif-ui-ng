@@ -1,0 +1,8 @@
+<div id="home">
+  <app-header></app-header>
+  <app-search-bar [(searchTerm)]="searchTerm" (keyup)="search()">
+  </app-search-bar>
+  <div id="gifs" *ngIf="gifs">
+    <app-gif-card *ngFor="let gif of gifs" [gif]="gif"> </app-gif-card>
+  </div>
+</div>

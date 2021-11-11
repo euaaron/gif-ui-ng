@@ -1,0 +1,7 @@
+<div
+  id="gif-card"
+  (mouseover)="imageUrl = gif.images.compact"
+  (mouseout)="imageUrl = gif.images.static"
+  >
+  <img [src]="imageUrl" [alt]="gif.title" [title]="gif.title"/>
+</div>
