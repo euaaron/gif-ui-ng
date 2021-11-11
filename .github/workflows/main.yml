@@ -1,0 +1,52 @@
+name: GH Pages Deploy
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          key: ${{runner.os}}-modules-${{hashFiles('**/yarn.lock')}}
+          path: "**/node_modules"
+
+      - name: Setup Node and Yarn
+        uses: actions/setup-node@v2.1.4
+        with:
+          node-version: "14.x"
+
+      - name: Install Dependencies
+        run: yarn     
+   
+  deploy:
+    needs: [setup]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2.1.4
+      - uses: actions/cache@v2
+        with:
+          key: ${{runner.os}}-modules-${{hashFiles('**/yarn.lock')}}
+          path: "**/node_modules"     
+      - name: Setup Node and Yarn
+        uses: actions/setup-node@v2.1.4
+        with:
+          node-version: "14.x"  
+      - name: Angular Deploy to GH Pages
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.email "${{ secrets.EMAIL }}"
+          git config --global user.name "${{ secrets.USERNAME }}"
+          git remote set-url origin https://${{ secrets.GH_TOKEN }}:x-oauth-basic@github.com/${{ secrets.REPO }}.git
+          yarn ng add angular-cli-ghpages
+          yarn ng deploy --cname=${{ secrets.PAGE_URL }}
+        
+      
